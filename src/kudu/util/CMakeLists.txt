@@ -205,7 +205,7 @@ set(UTIL_SRCS
 # optimized regardless of the default optimization options.
 set_source_files_properties(memory/overwrite.cc PROPERTIES COMPILE_FLAGS "-O3")
 
-if(NOT APPLE)
+if(NOT NO_NVM_SUPPORT)
   set(UTIL_SRCS
     ${UTIL_SRCS}
     nvm_cache.cc)
@@ -229,7 +229,12 @@ if(NOT APPLE)
     ${UTIL_LIBS}
     breakpad_client
     dl
-    rt
+    rt)
+endif()
+
+if(NOT NO_NVM_SUPPORT)
+  set(UTIL_LIBS
+    ${UTIL_LBS}
     vmem)
 endif()
 
@@ -244,6 +249,11 @@ ADD_EXPORTABLE_LIBRARY(kudu_util
   DEPS ${UTIL_LIBS}
   NONLINK_DEPS gen_version_info
   EXPORTED_DEPS ${EXPORTED_UTIL_LIBS})
+
+if(NO_NVM_SUPPORT)
+ target_compile_definitions(kudu_util PRIVATE
+   NO_NVM_SUPPORT=1)
+endif()
 
 #######################################
 # kudu_util_compression
@@ -276,7 +286,7 @@ if(NOT NO_TESTS)
     gmock
     kudu_util)
 
-  if(NOT APPLE)
+  if(NOT NO_NVM_SUPPORT)
     target_link_libraries(kudu_test_util
       vmem)
   endif()
