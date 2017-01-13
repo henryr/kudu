@@ -70,13 +70,13 @@ $ make -j8  # or whatever level of parallelism your machine can handle
 The build artifacts, including the test binaries, will be stored in
 _build/debug/bin/_.
 
-To omit the Kudu unit tests during the build, add -DNO_TESTS=1 to the
+To omit the Kudu unit tests during the build, add -DNO_KUDU_TESTS=1 to the
 invocation of cmake. For example:
 
 [source,bash]
 ----
 $ cd build/debug
-$ cmake -DNO_TESTS=1 ../..
+$ cmake -DNO_KUDU_TESTS=1 ../..
 ----
 
 == Running unit/functional tests
