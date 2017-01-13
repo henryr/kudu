@@ -900,7 +900,11 @@ if (NOT "${KUDU_USE_ASAN}" AND
 endif()
 
 # Required pmem libraries
-if (NOT APPLE)
+if(APPLE)
+  set(NO_NVM_SUPPORT 1)
+endif()
+
+if (NOT NO_NVM_SUPPORT)
 find_package(Pmem REQUIRED)
 include_directories(${PMEM_INCLUDE_DIR})
 ADD_THIRDPARTY_LIB(vmem
